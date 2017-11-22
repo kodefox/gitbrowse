@@ -1,10 +1,11 @@
 // @flow
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Button} from 'react-native';
+import {StyleSheet, Text, View, Button, BackHandler} from 'react-native';
+import HomeScene from './HomeScene';
+import SearchScene from './SearchScene';
+import BrowseScene from './BrowseScene';
 
-const HOME = 'home';
-const SEARCH = 'search';
-const BROWSE = 'browse';
+import {ROUTES} from './lib/constants';
 
 type Props = {};
 type State = {
@@ -13,47 +14,37 @@ type State = {
 
 export default class App extends Component<Props, State> {
   state = {
-    currentPage: HOME,
+    currentPage: ROUTES.HOME,
+  };
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this._onBackPress);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this._onBackPress);
+  }
+
+  _onBackPress = () => {
+    if (this.state.currentPage === ROUTES.HOME) {
+      return false;
+    } else {
+      this.setState({currentPage: ROUTES.HOME});
+      return true;
+    }
   };
 
   render() {
+    let navigate = page => this.setState({currentPage: page});
     switch (this.state.currentPage) {
-      case HOME: {
-        return (
-          <View style={styles.container}>
-            <Text>Welcome</Text>
-            <Button
-              title="Search"
-              onPress={() => this.setState({currentPage: SEARCH})}
-            />
-            <Button
-              title="Browse"
-              onPress={() => this.setState({currentPage: BROWSE})}
-            />
-          </View>
-        );
+      case ROUTES.HOME: {
+        return <HomeScene navigate={navigate} />;
       }
-      case SEARCH: {
-        return (
-          <View style={styles.container}>
-            <Text>Search</Text>
-            <Button
-              title="Back"
-              onPress={() => this.setState({currentPage: HOME})}
-            />
-          </View>
-        );
+      case ROUTES.SEARCH: {
+        return <SearchScene navigate={navigate} />;
       }
-      case BROWSE: {
-        return (
-          <View style={styles.container}>
-            <Text>Browse</Text>
-            <Button
-              title="Back"
-              onPress={() => this.setState({currentPage: HOME})}
-            />
-          </View>
-        );
+      case ROUTES.BROWSE: {
+        return <BrowseScene navigate={navigate} />;
       }
       default: {
         throw new Error('Unknown route.');
