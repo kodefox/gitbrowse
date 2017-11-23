@@ -56,7 +56,6 @@ export default class SearchScene extends Component<Props, State> {
           style={styles.textInput}
           value={usernameInput}
           onChangeText={onChangeText}
-          keyboardType="email-address"
           autoCapitalize="none"
           autoCorrect={false}
           autoFocus={true}
@@ -69,7 +68,7 @@ export default class SearchScene extends Component<Props, State> {
             title="Back"
             onPress={() => this.props.navigate(ROUTES.HOME)}
           />
-          <Button title="Submit" onPress={onSubmit} />
+          <Button title="Search" onPress={onSubmit} />
         </View>
         <View style={styles.resultList}>
           {users.map(user => <UserCard key={user.id} user={user} />)}
@@ -81,6 +80,7 @@ export default class SearchScene extends Component<Props, State> {
   async _fetchUsers() {
     let username = this.state.usernameInput;
     this.setState({
+      users: [],
       isLoading: true,
     });
     let response = await fetch(
