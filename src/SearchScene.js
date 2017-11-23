@@ -10,20 +10,22 @@ import {
   Keyboard,
 } from 'react-native';
 
+import UserCard from './components/UserCard';
 import {ROUTES} from './lib/constants';
 
-type User = {
+export type UserSummary = {
   id: number,
   login: string,
   score: number,
   avatar_url: string,
 };
+
 type Props = {
   navigate: (page: string) => void,
 };
 type State = {
   usernameInput: string,
-  users: Array<User>,
+  users: Array<UserSummary>,
   isLoading: boolean,
 };
 
@@ -46,14 +48,21 @@ export default class SearchScene extends Component<Props, State> {
     };
     return (
       <View style={styles.container}>
-        <View style={{flexDirection: 'row'}}>
-          <Text>Search</Text>
+        <View style={styles.titleBar}>
+          <Text style={styles.titleText}>Github User Search</Text>
           {isLoading ? <ActivityIndicator /> : null}
         </View>
         <TextInput
           style={styles.textInput}
           value={usernameInput}
           onChangeText={onChangeText}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoCorrect={false}
+          autoFocus={true}
+          onSubmitEditing={onSubmit}
+          returnKeyType="search"
+          underlineColorAndroid="transparent"
         />
         <View style={styles.buttonBar}>
           <Button
@@ -63,11 +72,7 @@ export default class SearchScene extends Component<Props, State> {
           <Button title="Submit" onPress={onSubmit} />
         </View>
         <View style={styles.resultList}>
-          {users.map(user => (
-            <View key={user.id}>
-              <Text>{user.login}</Text>
-            </View>
-          ))}
+          {users.map(user => <UserCard key={user.id} user={user} />)}
         </View>
       </View>
     );
@@ -95,6 +100,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 20,
   },
+  titleBar: {
+    flexDirection: 'row',
+    height: 30,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  titleText: {
+    fontSize: 17,
+    fontWeight: 'bold',
+  },
   buttonBar: {
     width: '100%',
     flexDirection: 'row',
@@ -102,7 +117,7 @@ const styles = StyleSheet.create({
   },
   resultList: {},
   textInput: {
-    height: 30,
+    height: 34,
     paddingHorizontal: 4,
     borderWidth: 1,
     borderColor: '#aaa',
