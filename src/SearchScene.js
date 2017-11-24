@@ -8,11 +8,15 @@ import {
   TextInput,
   ActivityIndicator,
   Keyboard,
+  ScrollView,
+  KeyboardAvoidingView,
 } from 'react-native';
 
 import UserCard from './components/UserCard';
 
 import type {User} from './rootReducer';
+
+const TITLE_BAR_HEIGHT = 60;
 
 type Props = {
   navigation: Object,
@@ -44,7 +48,11 @@ export default class SearchScene extends Component<Props, State> {
       this.props.navigation.navigate('UserDetailScene', {user});
     };
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView
+        keyboardVerticalOffset={TITLE_BAR_HEIGHT}
+        behavior="padding"
+        style={styles.container}
+      >
         <TextInput
           style={styles.textInput}
           value={usernameInput}
@@ -60,12 +68,15 @@ export default class SearchScene extends Component<Props, State> {
           {isLoading ? <ActivityIndicator /> : null}
           <Button title="Search" onPress={onSubmit} />
         </View>
-        <View style={styles.resultList}>
+        <ScrollView style={styles.resultList}>
           {users.map(user => (
             <UserCard key={user.id} user={user} onPress={onPress} />
           ))}
+        </ScrollView>
+        <View>
+          <Button title="Clear Result" onPress={() => {}} />
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -74,7 +85,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 20,
+    paddingTop: 20,
+    paddingHorizontal: 20,
   },
   titleBar: {
     flexDirection: 'row',
@@ -91,7 +103,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
-  resultList: {},
+  resultList: {
+    flex: 1,
+  },
   textInput: {
     height: 34,
     paddingHorizontal: 4,
