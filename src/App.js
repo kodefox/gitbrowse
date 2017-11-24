@@ -1,9 +1,11 @@
 // @flow
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, Button, BackHandler} from 'react-native';
+import {StackNavigator} from 'react-navigation';
 import HomeScene from './HomeScene';
 import SearchScene from './SearchScene';
 import BrowseScene from './BrowseScene';
+import UserDetailScene from './UserDetailScene';
 
 import {ROUTES} from './lib/constants';
 
@@ -11,6 +13,27 @@ type Props = {};
 type State = {
   currentPage: string,
 };
+
+let Main = StackNavigator({
+  HomeScene: {
+    screen: HomeScene,
+  },
+  SearchScene: {
+    screen: SearchScene,
+    navigationOptions: () => {
+      return {title: 'Search Github Users'};
+    },
+  },
+  UserDetailScene: {
+    screen: UserDetailScene,
+    navigationOptions: () => {
+      return {title: 'User Details'};
+    },
+  },
+  BrowseScene: {
+    screen: BrowseScene,
+  },
+});
 
 export default class App extends Component<Props, State> {
   state = {
@@ -35,21 +58,7 @@ export default class App extends Component<Props, State> {
   };
 
   render() {
-    let navigate = page => this.setState({currentPage: page});
-    switch (this.state.currentPage) {
-      case ROUTES.HOME: {
-        return <HomeScene navigate={navigate} />;
-      }
-      case ROUTES.SEARCH: {
-        return <SearchScene navigate={navigate} />;
-      }
-      case ROUTES.BROWSE: {
-        return <BrowseScene navigate={navigate} />;
-      }
-      default: {
-        throw new Error('Unknown route.');
-      }
-    }
+    return <Main />;
   }
 }
 

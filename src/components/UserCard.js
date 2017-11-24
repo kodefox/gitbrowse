@@ -1,20 +1,23 @@
 // @flow
 import React from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 
 import type {UserSummary} from '../SearchScene';
 
 type Props = {
   user: UserSummary,
+  onPress: (user: UserSummary) => void,
 };
 
 export default function UserCard(props: Props) {
-  let {user} = props;
+  let {user, onPress} = props;
   return (
-    <View style={styles.container}>
-      <Image style={styles.avatar} source={{uri: user.avatar_url}} />
-      <Text>{user.login}</Text>
-    </View>
+    <TouchableOpacity onPress={() => onPress(user)}>
+      <View style={styles.container}>
+        <Image style={styles.avatar} source={{uri: user.avatar_url}} />
+        <Text>{user.login}</Text>
+      </View>
+    </TouchableOpacity>
   );
 }
 

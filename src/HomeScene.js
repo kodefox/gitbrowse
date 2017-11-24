@@ -5,7 +5,7 @@ import {StyleSheet, Text, View, Button} from 'react-native';
 import {ROUTES} from './lib/constants';
 
 type Props = {
-  navigate: (page: string) => void,
+  navigation: Object,
 };
 
 export default class HomeScene extends Component<Props> {
@@ -15,11 +15,11 @@ export default class HomeScene extends Component<Props> {
         <Text>Welcome</Text>
         <Button
           title="Search"
-          onPress={() => this.props.navigate(ROUTES.SEARCH)}
+          onPress={() => this.props.navigation.navigate('SearchScene')}
         />
         <Button
           title="Browse"
-          onPress={() => this.props.navigate(ROUTES.BROWSE)}
+          onPress={() => this.props.navigation.navigate('BrowseScene')}
         />
       </View>
     );

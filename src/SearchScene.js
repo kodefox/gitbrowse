@@ -21,7 +21,7 @@ export type UserSummary = {
 };
 
 type Props = {
-  navigate: (page: string) => void,
+  navigation: Object,
 };
 type State = {
   usernameInput: string,
@@ -46,12 +46,11 @@ export default class SearchScene extends Component<Props, State> {
       Keyboard.dismiss();
       this._fetchUsers();
     };
+    let onPress = user => {
+      this.props.navigation.navigate('UserDetailScene', {user});
+    };
     return (
       <View style={styles.container}>
-        <View style={styles.titleBar}>
-          <Text style={styles.titleText}>Github User Search</Text>
-          {isLoading ? <ActivityIndicator /> : null}
-        </View>
         <TextInput
           style={styles.textInput}
           value={usernameInput}
@@ -64,14 +63,13 @@ export default class SearchScene extends Component<Props, State> {
           underlineColorAndroid="transparent"
         />
         <View style={styles.buttonBar}>
-          <Button
-            title="Back"
-            onPress={() => this.props.navigate(ROUTES.HOME)}
-          />
+          {isLoading ? <ActivityIndicator /> : null}
           <Button title="Search" onPress={onSubmit} />
         </View>
         <View style={styles.resultList}>
-          {users.map(user => <UserCard key={user.id} user={user} />)}
+          {users.map(user => (
+            <UserCard key={user.id} user={user} onPress={onPress} />
+          ))}
         </View>
       </View>
     );
