@@ -2,7 +2,7 @@
 import React from 'react';
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 
-import type {UserSummary} from '../SearchScene';
+import type {User as UserSummary} from '../rootReducer';
 
 type Props = {
   user: UserSummary,

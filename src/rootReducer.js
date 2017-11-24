@@ -1,4 +1,7 @@
 // @flow
+export type DataStore = {
+  dispatch: (action: Action) => void,
+};
 
 export type User = {
   id: number,
@@ -6,22 +9,30 @@ export type User = {
   avatar_url: string,
 };
 
-type RootState = {
+export type RootState = {
   isLoading: boolean,
   users: Array<User>,
 };
 
-type Action = {
-  type: 'USERS_RECEIVED',
-  users: Array<User>,
-};
+export type Action =
+  | {
+      type: 'USERS_RECEIVED',
+      users: Array<User>,
+    }
+  | {
+      type: 'SEARCH_REQUESTED',
+      username: string,
+    };
 
 let initialState = {
   isLoading: false,
   users: [],
 };
 
-export default function rootReducer(oldState: RootState, action: Action) {
+export default function rootReducer(
+  oldState: RootState,
+  action: Action,
+): RootState {
   if (oldState == null) {
     oldState = initialState;
   }

@@ -37,6 +37,8 @@
 .*/node_modules/expo/src/.*
 .*/node_modules/react-native-gesture-handler/.*
 
+.*/node_modules/react-navigation/.*
+
 [include]
 
 [libs]
