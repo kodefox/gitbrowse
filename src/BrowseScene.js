@@ -2,10 +2,8 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, Button} from 'react-native';
 
-import {ROUTES} from './lib/constants';
-
 type Props = {
-  navigate: (page: string) => void,
+  navigation: Object,
 };
 
 export default class BrowseScene extends Component<Props> {
@@ -13,7 +11,7 @@ export default class BrowseScene extends Component<Props> {
     return (
       <View style={styles.container}>
         <Text>Search</Text>
-        <Button title="Back" onPress={() => this.props.navigate(ROUTES.HOME)} />
+        <Button title="Back" onPress={() => this.props.navigation.goBack()} />
       </View>
     );
   }

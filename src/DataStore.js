@@ -1,22 +1,6 @@
 // @flow
+import {createStore, applyMiddleware} from 'redux';
+import rootReducer from './rootReducer';
+import middleware from './middleware';
 
-class DataStore {
-  state: Object;
-  reducer: Function;
-
-  constructor(initialState: Object, reducer: Function) {
-    this.state = initialState;
-    this.reducer = reducer;
-  }
-
-  dispatch(action: Object) {
-    let oldState = this.state;
-    this.state = this.reducer(oldState, action);
-  }
-
-  getState() {
-    return this.state;
-  }
-}
-
-export default DataStore;
+export default createStore(rootReducer, applyMiddleware(middleware));

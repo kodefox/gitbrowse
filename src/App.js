@@ -1,18 +1,15 @@
 // @flow
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, Button, BackHandler} from 'react-native';
+import {Provider} from 'react-redux';
 import {StackNavigator} from 'react-navigation';
 import HomeScene from './HomeScene';
-import SearchScene from './SearchScene';
+import SearchScene from './SearchScene-container';
 import BrowseScene from './BrowseScene';
 import UserDetailScene from './UserDetailScene';
-
-import {ROUTES} from './lib/constants';
+import dataStore from './dataStore';
 
 type Props = {};
-type State = {
-  currentPage: string,
-};
 
 let Main = StackNavigator({
   HomeScene: {
@@ -35,11 +32,7 @@ let Main = StackNavigator({
   },
 });
 
-export default class App extends Component<Props, State> {
-  state = {
-    currentPage: ROUTES.HOME,
-  };
-
+export default class App extends Component<Props> {
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this._onBackPress);
   }
@@ -49,16 +42,15 @@ export default class App extends Component<Props, State> {
   }
 
   _onBackPress = () => {
-    if (this.state.currentPage === ROUTES.HOME) {
-      return false;
-    } else {
-      this.setState({currentPage: ROUTES.HOME});
-      return true;
-    }
+    // TODO: Fix this.
   };
 
   render() {
-    return <Main />;
+    return (
+      <Provider store={dataStore}>
+        <Main />
+      </Provider>
+    );
   }
 }
 

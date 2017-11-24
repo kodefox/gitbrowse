@@ -11,40 +11,34 @@ import {
 } from 'react-native';
 
 import UserCard from './components/UserCard';
-import {ROUTES} from './lib/constants';
 
-export type UserSummary = {
-  id: number,
-  login: string,
-  score: number,
-  avatar_url: string,
-};
+import type {User} from './rootReducer';
 
 type Props = {
   navigation: Object,
+  isLoading: boolean,
+  users: Array<User>,
+  onSearchSubmit: (username: string) => void,
 };
 type State = {
   usernameInput: string,
-  users: Array<UserSummary>,
-  isLoading: boolean,
 };
 
 export default class SearchScene extends Component<Props, State> {
   state = {
     usernameInput: '',
-    users: [],
-    isLoading: false,
   };
 
   render() {
-    let {usernameInput, isLoading, users} = this.state;
+    let {usernameInput} = this.state;
+    let {users, isLoading} = this.props;
     let onChangeText = text => {
       let validatedText = text.replace(/[^\w-]/g, '');
       this.setState({usernameInput: text});
     };
     let onSubmit = () => {
       Keyboard.dismiss();
-      this._fetchUsers();
+      this.props.onSearchSubmit(usernameInput);
     };
     let onPress = user => {
       this.props.navigation.navigate('UserDetailScene', {user});
@@ -73,22 +67,6 @@ export default class SearchScene extends Component<Props, State> {
         </View>
       </View>
     );
-  }
-
-  async _fetchUsers() {
-    let username = this.state.usernameInput;
-    this.setState({
-      users: [],
-      isLoading: true,
-    });
-    let response = await fetch(
-      `https://api.github.com/search/users?q=${username}`,
-    );
-    let data = await response.json();
-    this.setState({
-      users: data.items,
-      isLoading: false,
-    });
   }
 }
 

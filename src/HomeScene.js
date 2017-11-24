@@ -2,8 +2,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, Button} from 'react-native';
 
-import {ROUTES} from './lib/constants';
-
 type Props = {
   navigation: Object,
 };
